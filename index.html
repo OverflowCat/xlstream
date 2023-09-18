@@ -1,0 +1,42 @@
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>
+      流式生成 & 下载 xlsx
+    </title>
+    </meta>
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
+    <div id="root">
+      <button id="start">Start</button>
+      <div id="progress">未开始</div>
+      <textarea id="row"></textarea>
+      <script src="https://cdn.jsdelivr.net/npm/web-streams-polyfill@2.0.2/dist/ponyfill.min.js"></script>
+      <!-- <script src="https://cdn.jsdelivr.net/gh/eligrey/Blob.js/Blob.js"></script> -->
+      <script src="https://jimmywarting.github.io/StreamSaver.js/StreamSaver.js"></script>
+      <script type="module">
+        import { getZipFileBlob } from "./index.js";
+        document.querySelector("#start").onclick = async () => {
+          document.querySelector('#start').disabled = true;
+          alert('开始');
+          const fileStream = streamSaver.createWriteStream("亚文化流式起名机.xlsx");
+          const readableStream = await getZipFileBlob();
+            return readableStream
+              .pipeTo(fileStream)
+              .then(() => console.log("done writing"));
+        };
+      </script>
+    </div>
+    <style>
+      textarea {
+        width: 100%;
+        height: 800px;
+      }
+      button {
+        font-size: 200%;
+      }
+    </style>
+  </body>
+</html>
